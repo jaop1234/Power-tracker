@@ -4,684 +4,697 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Power Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Comfortaa', cursive, sans-serif;
-      background: #f8f8fa;
-      color: #3b2e23;
-      margin: 0;
-      padding: 0;
+      background: #fff8f0;
+      color: #4a3c31;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
     }
-    header {
-      background: #6f4e37;
-      color: #fff;
-      padding: 32px 0 16px 0;
-      text-align: center;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-      box-shadow: 0 2px 8px #e0c7a5;
-    }
-    header h1 {
-      margin: 0 0 10px 0;
-      font-size: 2.3rem;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 24px auto;
-      padding: 0 16px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    @media (min-width: 900px) {
-      .container {
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-      }
-    }
-    section, .summary, .charts-panel {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 2px 12px rgba(143,120,98,0.10);
-      padding: 20px 18px 24px 18px;
-    }
-    .summary {
-      margin-bottom: 0;
-    }
-    .charts-panel {
-      padding: 20px 10px 10px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-width: 0;
-    }
-    h2 {
-      margin-top: 0;
+    h1, h2 {
+      font-weight: 700;
       color: #6f4e37;
+      text-align: center;
+    }
+    section {
+      background: #fff1e6;
+      padding: 20px 20px 30px 20px;
+      border-radius: 18px;
+      box-shadow: 0 4px 12px rgba(143, 120, 98, 0.13);
+      margin-bottom: 32px;
     }
     form {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 18px;
-      margin-bottom: 12px;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 16px 18px;
+      margin-bottom: 18px;
     }
-    form input, form select, form button {
-      font-size: 1rem;
-      padding: 8px;
-      border-radius: 10px;
-      border: 1px solid #d6c5b0;
+    input, select {
+      padding: 12px;
+      font-size: 1.08rem;
+      border-radius: 12px;
+      border: 1.5px solid #e4d7c5;
       background: #f9f6f2;
-      color: #3b2e23;
+      color: #4a3c31;
+      transition: border-color 0.3s;
     }
-    form button {
-      grid-column: 1 / -1;
-      background: #c47f49;
+    input:focus, select:focus {
+      border-color: #c47f49;
+      outline: none;
+    }
+    button {
+      background: #b87c3b;
       color: #fff;
-      font-weight: bold;
       border: none;
-      margin-top: 6px;
       cursor: pointer;
+      font-weight: 700;
+      border-radius: 14px;
+      font-size: 1.13em;
+      letter-spacing: 0.04em;
+      padding: 13px 0;
+      margin-top: 8px;
       transition: background 0.2s;
     }
-    form button:hover {
+    button:hover {
       background: #a9672f;
     }
-    .table-scroll {
-      overflow-x: auto;
-      margin: 0 -18px;
-      padding: 0 2px;
+    #lightingSubmitBtn {
+      grid-column: 1 / -1;
+      background: #b87c3b;
+      color: #fff;
+      border-radius: 14px;
+      font-size: 1.13em;
+      margin-top: 8px;
+    }
+    #lightingSubmitBtn:hover {
+      background: #a9672f;
     }
     table {
       width: 100%;
-      min-width: 600px;
       border-collapse: collapse;
       background: #fff;
-      border-radius: 12px;
-      margin: 0;
-      font-size: 1em;
-      table-layout: fixed;
-      word-break: break-word;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(143, 120, 98, 0.10);
+      margin-top: 16px;
+      font-size: 1.03em;
     }
     th, td {
-      padding: 10px 8px;
+      padding: 13px 8px;
       border-bottom: 1px solid #e4d7c5;
       text-align: left;
-      max-width: 160px;
-      overflow-wrap: anywhere;
+      user-select: none;
+      font-family: 'Comfortaa', cursive, sans-serif;
     }
     th {
-      background: #f7e9d2;
+      background-color: #d6a35d;
       color: #6f4e37;
       font-weight: 700;
       font-size: 1em;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
     }
     tr:last-child td {
       border-bottom: none;
     }
+    tr:nth-child(even) td {
+      background: #fff8f0;
+    }
     .action-btn {
-      background-color: #b64500;
       border: none;
-      color: white;
-      padding: 4px 10px;
+      color: #fff;
+      padding: 7px 18px;
       border-radius: 10px;
       cursor: pointer;
-      font-weight: 600;
-      font-size: 0.95em;
-      margin-right: 2px;
+      font-weight: 700;
+      font-size: 1em;
+      margin-right: 4px;
+      margin-bottom: 2px;
+      transition: background 0.2s;
+      display: block;
+      width: 60px;
     }
-    .action-btn.edit-btn {
-      background-color: #4e8a00;
+    .edit-btn {
+      background: #4e8a00;
     }
-    .action-btn:hover {
-      filter: brightness(0.9);
+    .edit-btn:hover {
+      background: #356300;
+    }
+    .delete-btn {
+      background: #b64500;
+    }
+    .delete-btn:hover {
+      background: #933e00;
     }
     .summary {
-      font-size: 1.1em;
-      padding: 20px;
-      text-align: center;
       background: #fff2e8;
+      padding: 22px 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px #ddb98a;
       color: #4a3c31;
-    }
-    .summary select {
-      font-size: 1em;
-      border-radius: 8px;
-      padding: 6px 10px;
-      margin-left: 8px;
-    }
-    .charts-panel {
-      min-width: 0;
-    }
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    @media (min-width: 700px) {
-      .charts-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-    .charts-panel canvas {
-      width: 100% !important;
-      height: 320px !important;
-      max-width: 100%;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(143,120,98,0.10);
-      padding: 10px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      font-size: 1.12em;
+      text-align: center;
     }
     .disabled {
       opacity: 0.5;
       pointer-events: none;
     }
     #userGuide {
-      background: #f7e9d2;
-      border-radius: 15px;
-      box-shadow: 0 2px 8px #e0c7a5;
-      margin-bottom: 30px;
-      padding: 18px;
-      grid-column: 1 / -1;
+      background:#f7e9d2;
+      border-radius:15px;
+      box-shadow:0 2px 8px #e0c7a5;
+      margin-bottom:30px;
+      padding:24px;
     }
-    #userGuide h2 { margin-top: 0; }
-    #userGuide ol { font-size: 1.08em; }
-    #userGuide p { margin-top: 12px; font-size: 0.97em; }
+    #generateChartsBtn {
+      margin: 36px auto 48px auto;
+      padding: 18px 56px;
+      font-size: 1.22em;
+      border-radius: 24px;
+      background: linear-gradient(90deg, #4e8a00 60%, #b64500 100%);
+      box-shadow: 0 4px 16px #c2b280;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s;
+    }
+    #generateChartsBtn:hover {
+      background: linear-gradient(90deg, #b64500 60%, #4e8a00 100%);
+      transform: scale(1.06);
+    }
+    .charts-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    canvas {
+      width: 400px !important;
+      height: 400px !important;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(143, 120, 98, 0.15);
+      background: #fff;
+      padding: 15px;
+    }
+    @media (max-width: 700px) {
+      table, thead, tbody, th, td, tr { font-size: 0.97em; }
+      form { grid-template-columns: 1fr; }
+      th, td { padding: 9px 5px; }
+      canvas { width: 100% !important; height: auto !important; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Power Tracker</h1>
-    <div id="userGuide">
-      <h2>How to Use Power-Tracker</h2>
-      <ol>
-        <li><b>Enter Lighting Information:</b> Fill in the form for each light bulb (name, wattage, number of bulbs, room, hours per day) and click <b>Add Light Bulb</b>. Edit or delete bulbs in the table below as needed.</li>
-        <li><b>Enter Other Appliances:</b> After adding lighting, fill in the form for each other appliance (name, wattage, hours, quantity, room, category) and click <b>Add Appliance</b>. Edit or delete appliances in the table below.</li>
-        <li><b>Adjust Electricity Rate:</b> Change the electricity rate ($ per kWh) if needed. All costs update automatically.</li>
-        <li><b>View Your Summary:</b> See your total energy use and cost in the summary section.</li>
-        <li><b>Generate Charts:</b> Click <b>Generate Charts</b> to see breakdowns of your energy use by category, room, and appliance.</li>
-      </ol>
-      <p><b>Tip:</b> All your data is saved in your browser. For best results, enter accurate data for each appliance.</p>
-    </div>
-  </header>
-  <div class="container">
-    <section id="lightingSection" aria-label="Lighting appliances">
-      <h2>Step 1: Lighting</h2>
-      <form id="lightingForm" aria-label="Add lighting appliance">
-        <input type="text" id="lightingName" placeholder="Light Bulb Name" required autocomplete="off" />
-        <input type="number" id="lightingWattage" placeholder="Wattage per bulb (W)" required min="0" step="0.1" />
-        <input type="number" id="lightingNumBulbs" placeholder="Number of bulbs" required min="1" step="1" />
-        <input type="text" id="lightingRoom" placeholder="Room (required)" required autocomplete="off" />
-        <input type="number" id="lightingHours" placeholder="Avg hours on per bulb" required min="0" max="24" step="0.1" />
-        <button type="submit" id="lightingSubmitBtn">Add Light Bulb</button>
-      </form>
-      <div class="table-scroll">
-        <table id="lightingTable" aria-label="Lighting appliances list">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Wattage (W)</th>
-              <th>Number of Bulbs</th>
-              <th>Room</th>
-              <th>Hours/Day</th>
-              <th>Energy (kWh/Day)</th>
-              <th>Cost ($/Day)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-    <section id="applianceSection" aria-label="Other appliances" class="disabled">
-      <h2>Step 2: Other Appliances</h2>
-      <form id="applianceForm" aria-label="Add other appliance">
-        <input type="text" id="applianceName" placeholder="Appliance Name" required autocomplete="off" />
-        <input type="number" id="applianceWattage" placeholder="Wattage per unit (W)" required min="0" step="0.1" />
-        <input type="number" id="applianceHours" placeholder="Hours used per day" required min="0" max="24" step="0.1" />
-        <input type="number" id="applianceQuantity" placeholder="Quantity (number of units)" min="1" step="1" value="1" required />
-        <input type="text" id="applianceRoom" placeholder="Room (required)" required autocomplete="off" />
-        <input list="categoryList" id="applianceCategory" placeholder="Category (choose or add)" autocomplete="off" />
-        <datalist id="categoryList">
-          <option value="Lighting"></option>
-          <option value="Heating"></option>
-          <option value="Cooling"></option>
-          <option value="Kitchen"></option>
-          <option value="Entertainment"></option>
-          <option value="Cleaning"></option>
-          <option value="Office"></option>
-          <option value="Other"></option>
-        </datalist>
-        <button type="submit" id="applianceSubmitBtn">Add Appliance</button>
-      </form>
-      <div class="table-scroll">
-        <table id="applianceTable" aria-label="Other appliances list">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Wattage (W)</th>
-              <th>Hours/Day</th>
-              <th>Quantity</th>
-              <th>Room</th>
-              <th>Category</th>
-              <th>Energy (kWh/Day)</th>
-              <th>Cost ($/Day)</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </section>
-    <div class="summary" style="grid-column: 1 / -1;">
-      <div style="margin-bottom: 10px;">
-        <label for="summaryPeriod">Show usage and cost per: </label>
-        <select id="summaryPeriod">
-          <option value="day">Day</option>
-          <option value="week">Week</option>
-          <option value="month" selected>Month</option>
-          <option value="year">Year</option>
-        </select>
-      </div>
-      <div>
-        <span id="summaryText">Please enter your lighting info to get started.</span>
-        <p id="summaryEnergyCost" style="font-weight:700;"></p>
-      </div>
-      <div style="margin-top:12px;">
-        <label for="electricityRate">Electricity rate ($ per kWh): </label>
-        <input type="number" id="electricityRate" value="0.30" step="0.001" min="0.001" style="width:80px; text-align:center;">
-      </div>
-    </div>
-    <div class="charts-panel" style="grid-column: 1 / -1;">
-      <button id="generateChartsBtn" style="margin-bottom:18px;">Generate Charts</button>
-      <div class="charts-grid" id="chartsContainer" style="display:none;">
-        <canvas id="chartCategory" aria-label="Energy use by category"></canvas>
-        <canvas id="chartRoom" aria-label="Energy use by room"></canvas>
-        <canvas id="chartEnergyCost" aria-label="Energy and cost by appliance"></canvas>
-        <canvas id="chartLightingRoom" aria-label="Lighting energy distribution by room"></canvas>
-      </div>
-    </div>
+  <section id="userGuide">
+    <h2 style="margin-top:0;">How to Use Power-Tracker</h2>
+    <ol style="font-size:1.08em;">
+      <li><b>Enter Lighting Information:</b> Fill in the form for each light bulb (name, wattage, number of bulbs, room, hours per day) and click <b>Add Light Bulb</b>. Edit or delete bulbs in the table below as needed.</li>
+      <li><b>Enter Other Appliances:</b> After adding lighting, fill in the form for each other appliance (name, wattage, hours, quantity, room, category) and click <b>Add Appliance</b>. Edit or delete appliances in the table below.</li>
+      <li><b>Adjust Electricity Rate:</b> Change the electricity rate ($ per kWh) if needed. All costs update automatically.</li>
+      <li><b>View Your Summary:</b> See your total daily energy use and cost in the summary section.</li>
+      <li><b>Generate Charts:</b> Click <b>Generate Charts</b> to see breakdowns of your energy use by category, room, and appliance.</li>
+      <li><b>Get Energy usage summary:</b> Review the summary provided based on your usage.</li>
+    </ol>
+    <p style="margin-top:12px; font-size:0.97em;"><b>Tip:</b> All your data is saved in your browser. For best results, enter accurate data for each appliance.</p>
+  </section>
+
+  <h1>Power Tracker</h1>
+  <section id="lightingSection" aria-label="Lighting appliances">
+    <h2>Step 1: Lighting</h2>
+    <form id="lightingForm" aria-label="Add lighting appliance">
+      <input type="text" id="lightingName" placeholder="Light Bulb Name" required autocomplete="off" />
+      <input type="number" id="lightingWattage" placeholder="Wattage per bulb (W)" required min="0" step="0.1" />
+      <input type="number" id="lightingNumBulbs" placeholder="Number of bulbs" required min="1" step="1" />
+      <input type="text" id="lightingRoom" placeholder="Room (required)" required autocomplete="off" />
+      <input type="number" id="lightingHours" placeholder="Avg hours on per bulb" required min="0" max="24" step="0.1" />
+      <button type="submit" id="lightingSubmitBtn">Add Light Bulb</button>
+    </form>
+    <table id="lightingTable" aria-label="Lighting appliances list">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wattage (W)</th>
+          <th>Number of Bulbs</th>
+          <th>Room</th>
+          <th>Hours/Day</th>
+          <th>Energy (kWh/Day)</th>
+          <th>Cost ($/Day)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="applianceSection" aria-label="Other appliances" class="disabled">
+    <h2>Step 2: Other Appliances</h2>
+    <form id="applianceForm" aria-label="Add other appliance">
+      <input type="text" id="applianceName" placeholder="Appliance Name" required autocomplete="off" />
+      <input type="number" id="applianceWattage" placeholder="Wattage per unit (W)" required min="0" step="0.1" />
+      <input type="number" id="applianceHours" placeholder="Hours used per day" required min="0" max="24" step="0.1" />
+      <input type="number" id="applianceQuantity" placeholder="Quantity (number of units)" min="1" step="1" value="1" required />
+      <input type="text" id="applianceRoom" placeholder="Room (required)" required autocomplete="off" />
+      <input list="categoryList" id="applianceCategory" placeholder="Category (choose or add)" autocomplete="off" />
+      <datalist id="categoryList">
+        <option value="Lighting"></option>
+        <option value="Heating"></option>
+        <option value="Cooling"></option>
+        <option value="Kitchen"></option>
+        <option value="Entertainment"></option>
+        <option value="Cleaning"></option>
+        <option value="Office"></option>
+        <option value="Other"></option>
+      </datalist>
+      <button type="submit" id="applianceSubmitBtn">Add Appliance</button>
+    </form>
+    <table id="applianceTable" aria-label="Other appliances list">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wattage (W)</th>
+          <th>Hours/Day</th>
+          <th>Quantity</th>
+          <th>Room</th>
+          <th>Category</th>
+          <th>Energy (kWh/Day)</th>
+          <th>Cost ($/Day)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <div class="summary" aria-live="polite" aria-atomic="true">
+    <h2>Summary</h2>
+    <p id="summaryText">Please enter your lighting info to get started.</p>
+    <p id="summaryEnergyCost" style="font-weight:700;"></p>
   </div>
-  <script>
-    // Data storage and DOM references
-    let lightingAppliances = JSON.parse(localStorage.getItem('lightingAppliances')) || [];
-    let otherAppliances    = JSON.parse(localStorage.getItem('otherAppliances'))    || [];
-    let electricityRate    = parseFloat(localStorage.getItem('electricityRate'))   || 0.30;
 
-    const lightingForm     = document.getElementById('lightingForm');
-    const lightingTableBody= document.querySelector('#lightingTable tbody');
-    const applianceForm    = document.getElementById('applianceForm');
-    const applianceTableBody= document.querySelector('#applianceTable tbody');
-    const applianceSection = document.getElementById('applianceSection');
-    const summaryText      = document.getElementById('summaryText');
-    const summaryEnergyCost= document.getElementById('summaryEnergyCost');
-    const electricityRateInput = document.getElementById('electricityRate');
-    const generateChartsBtn    = document.getElementById('generateChartsBtn');
-    const chartsContainer      = document.getElementById('chartsContainer');
-    const summaryPeriodSelect  = document.getElementById('summaryPeriod');
+  <div style="text-align:center; margin-top:30px;">
+    <label for="electricityRate">Electricity rate ($ per kWh): </label>
+    <input type="number" id="electricityRate" value="0.30" step="0.001" min="0.001" style="width:80px; text-align:center;">
+  </div>
 
-    let lightingEditIndex  = null;
-    let applianceEditIndex = null;
+  <button id="generateChartsBtn">
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" style="vertical-align:middle;">
+      <rect x="3" y="13" width="4" height="8" rx="2" fill="#fff"/>
+      <rect x="10" y="8" width="4" height="13" rx="2" fill="#fff"/>
+      <rect x="17" y="3" width="4" height="18" rx="2" fill="#fff"/>
+    </svg>
+    Generate Charts
+  </button>
 
-    function saveAll() {
-      localStorage.setItem('lightingAppliances', JSON.stringify(lightingAppliances));
-      localStorage.setItem('otherAppliances', JSON.stringify(otherAppliances));
-      localStorage.setItem('electricityRate', electricityRate.toString());
+  <div class="charts-container" id="chartsContainer" style="display:none;">
+    <canvas id="chartCategory" aria-label="Energy use by category"></canvas>
+    <canvas id="chartRoom" aria-label="Energy use by room"></canvas>
+    <canvas id="chartEnergyCost" aria-label="Energy and cost by appliance"></canvas>
+    <canvas id="chartLightingRoom" aria-label="Lighting energy distribution by room"></canvas>
+  </div>
+
+<script>
+  let lightingAppliances = JSON.parse(localStorage.getItem('lightingAppliances')) || [];
+  let otherAppliances    = JSON.parse(localStorage.getItem('otherAppliances'))    || [];
+  let electricityRate    = parseFloat(localStorage.getItem('electricityRate'))   || 0.30;
+
+  const lightingForm     = document.getElementById('lightingForm');
+  const lightingTableBody= document.querySelector('#lightingTable tbody');
+  const applianceForm    = document.getElementById('applianceForm');
+  const applianceTableBody= document.querySelector('#applianceTable tbody');
+  const applianceSection = document.getElementById('applianceSection');
+  const summaryText      = document.getElementById('summaryText');
+  const summaryEnergyCost= document.getElementById('summaryEnergyCost');
+  const electricityRateInput = document.getElementById('electricityRate');
+  const generateChartsBtn    = document.getElementById('generateChartsBtn');
+  const chartsContainer      = document.getElementById('chartsContainer');
+
+  let lightingEditIndex  = null;
+  let applianceEditIndex = null;
+
+  function saveAll() {
+    localStorage.setItem('lightingAppliances', JSON.stringify(lightingAppliances));
+    localStorage.setItem('otherAppliances', JSON.stringify(otherAppliances));
+    localStorage.setItem('electricityRate', electricityRate.toString());
+  }
+  function calculateEnergyCost(wattage, hours, quantity) {
+    const energy = (wattage * hours * quantity) / 1000;
+    const cost   = energy * electricityRate;
+    return { energy, cost };
+  }
+  function renderLightingTable() {
+    lightingTableBody.innerHTML = '';
+    lightingAppliances.forEach((item, i) => {
+      const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.wattage.toFixed(2)}</td>
+        <td>${item.quantity}</td>
+        <td>${item.room}</td>
+        <td>${item.hours.toFixed(2)}</td>
+        <td>${energy.toFixed(3)}</td>
+        <td>$${cost.toFixed(2)}</td>
+        <td>
+          <button class="action-btn edit-btn" onclick="editLighting(${i})">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteLighting(${i})">Delete</button>
+        </td>`;
+      lightingTableBody.appendChild(tr);
+    });
+  }
+  function renderApplianceTable() {
+    applianceTableBody.innerHTML = '';
+    otherAppliances.forEach((item, i) => {
+      const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.wattage.toFixed(2)}</td>
+        <td>${item.hours.toFixed(2)}</td>
+        <td>${item.quantity}</td>
+        <td>${item.room}</td>
+        <td>${item.category}</td>
+        <td>${energy.toFixed(3)}</td>
+        <td>$${cost.toFixed(2)}</td>
+        <td>
+          <button class="action-btn edit-btn" onclick="editAppliance(${i})">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteAppliance(${i})">Delete</button>
+        </td>`;
+      applianceTableBody.appendChild(tr);
+    });
+  }
+  function updateSummary() {
+    if (lightingAppliances.length === 0) {
+      summaryText.textContent = 'Please enter your lighting info to get started.';
+      summaryEnergyCost.textContent = '';
+      applianceSection.classList.add('disabled');
+      return;
     }
-    function calculateEnergyCost(wattage, hours, quantity) {
-      const energy = (wattage * hours * quantity) / 1000; // kWh/day
-      const cost   = energy * electricityRate;
-      return { energy, cost };
+    applianceSection.classList.remove('disabled');
+    summaryText.textContent = '';
+    let totalEnergy = 0, totalCost = 0;
+    lightingAppliances.forEach(item => {
+      const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
+      totalEnergy += energy;
+      totalCost   += cost;
+    });
+    otherAppliances.forEach(item => {
+      const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
+      totalEnergy += energy;
+      totalCost   += cost;
+    });
+    summaryEnergyCost.textContent =
+      `Total daily consumption: ${totalEnergy.toFixed(2)} kWh, costing about $${totalCost.toFixed(2)} per day.`;
+  }
+  lightingForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name    = document.getElementById('lightingName').value.trim();
+    const wattage = parseFloat(document.getElementById('lightingWattage').value);
+    const quantity= parseInt(document.getElementById('lightingNumBulbs').value, 10);
+    const hours   = parseFloat(document.getElementById('lightingHours').value);
+    const room    = document.getElementById('lightingRoom').value.trim();
+    if (!name || wattage <= 0 || quantity < 1 || hours < 0 || hours > 24 || room === '') {
+      alert('Please enter valid lighting info, including Room.');
+      return;
     }
-    function renderLightingTable() {
-      lightingTableBody.innerHTML = '';
-      lightingAppliances.forEach((item, i) => {
-        const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.wattage.toFixed(2)}</td>
-          <td>${item.quantity}</td>
-          <td>${item.room}</td>
-          <td>${item.hours.toFixed(2)}</td>
-          <td>${energy.toFixed(3)}</td>
-          <td>$${cost.toFixed(2)}</td>
-          <td>
-            <button class="action-btn edit-btn" onclick="editLighting(${i})">Edit</button>
-            <button class="action-btn" onclick="deleteLighting(${i})">Delete</button>
-          </td>`;
-        lightingTableBody.appendChild(tr);
-      });
+    const lightingItem = { name, wattage, quantity, hours, room };
+    if (lightingEditIndex !== null) {
+      lightingAppliances[lightingEditIndex] = lightingItem;
+      lightingEditIndex = null;
+      lightingForm.querySelector('button').textContent = 'Add Light Bulb';
+    } else {
+      lightingAppliances.push(lightingItem);
     }
-    function renderApplianceTable() {
-      applianceTableBody.innerHTML = '';
-      otherAppliances.forEach((item, i) => {
-        const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>${item.wattage.toFixed(2)}</td>
-          <td>${item.hours.toFixed(2)}</td>
-          <td>${item.quantity}</td>
-          <td>${item.room}</td>
-          <td>${item.category}</td>
-          <td>${energy.toFixed(3)}</td>
-          <td>$${cost.toFixed(2)}</td>
-          <td>
-            <button class="action-btn edit-btn" onclick="editAppliance(${i})">Edit</button>
-            <button class="action-btn" onclick="deleteAppliance(${i})">Delete</button>
-          </td>`;
-        applianceTableBody.appendChild(tr);
-      });
-    }
-    function updateSummary() {
-      if (lightingAppliances.length === 0) {
-        summaryText.textContent = 'Please enter your lighting info to get started.';
-        summaryEnergyCost.textContent = '';
-        applianceSection.classList.add('disabled');
-        return;
-      }
-      applianceSection.classList.remove('disabled');
-      summaryText.textContent = '';
-      let totalEnergy = 0, totalCost = 0;
-      lightingAppliances.forEach(item => {
-        const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
-        totalEnergy += energy;
-        totalCost   += cost;
-      });
-      otherAppliances.forEach(item => {
-        const { energy, cost } = calculateEnergyCost(item.wattage, item.hours, item.quantity);
-        totalEnergy += energy;
-        totalCost   += cost;
-      });
-      // Get the selected period and set the multiplier
-      const period = summaryPeriodSelect.value;
-      let factor = 1, label = 'day';
-      if (period === 'week') { factor = 7; label = 'week'; }
-      else if (period === 'month') { factor = 30; label = 'month'; }
-      else if (period === 'year') { factor = 365; label = 'year'; }
-      const periodEnergy = totalEnergy * factor;
-      const periodCost = totalCost * factor;
-      summaryEnergyCost.textContent =
-        `Total ${label}ly consumption: ${periodEnergy.toFixed(2)} kWh, costing about $${periodCost.toFixed(2)} per ${label}.`;
-    }
-    lightingForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const name    = document.getElementById('lightingName').value.trim();
-      const wattage = parseFloat(document.getElementById('lightingWattage').value);
-      const quantity= parseInt(document.getElementById('lightingNumBulbs').value, 10);
-      const hours   = parseFloat(document.getElementById('lightingHours').value);
-      const room    = document.getElementById('lightingRoom').value.trim();
-      if (!name || wattage <= 0 || quantity < 1 || hours < 0 || hours > 24 || room === '') {
-        alert('Please enter valid lighting info, including Room.');
-        return;
-      }
-      const lightingItem = { name, wattage, quantity, hours, room };
-      if (lightingEditIndex !== null) {
-        lightingAppliances[lightingEditIndex] = lightingItem;
-        lightingEditIndex = null;
-        lightingForm.querySelector('button').textContent = 'Add Light Bulb';
-      } else {
-        lightingAppliances.push(lightingItem);
-      }
+    saveAll();
+    renderLightingTable();
+    updateSummary();
+    lightingForm.reset();
+  });
+  window.editLighting = function(i) {
+    const item = lightingAppliances[i];
+    document.getElementById('lightingName').value      = item.name;
+    document.getElementById('lightingWattage').value   = item.wattage;
+    document.getElementById('lightingNumBulbs').value  = item.quantity;
+    document.getElementById('lightingHours').value     = item.hours;
+    document.getElementById('lightingRoom').value      = item.room;
+    lightingEditIndex = i;
+    lightingForm.querySelector('button').textContent = 'Update Light Bulb';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  window.deleteLighting = function(i) {
+    if (confirm(`Delete lighting item "${lightingAppliances[i].name}"?`)) {
+      lightingAppliances.splice(i, 1);
       saveAll();
       renderLightingTable();
       updateSummary();
-      lightingForm.reset();
-    });
-    window.editLighting = function(i) {
-      const item = lightingAppliances[i];
-      document.getElementById('lightingName').value      = item.name;
-      document.getElementById('lightingWattage').value   = item.wattage;
-      document.getElementById('lightingNumBulbs').value  = item.quantity;
-      document.getElementById('lightingHours').value     = item.hours;
-      document.getElementById('lightingRoom').value      = item.room;
-      lightingEditIndex = i;
-      lightingForm.querySelector('button').textContent = 'Update Light Bulb';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    window.deleteLighting = function(i) {
-      if (confirm(`Delete lighting item "${lightingAppliances[i].name}"?`)) {
-        lightingAppliances.splice(i, 1);
-        saveAll();
-        renderLightingTable();
-        updateSummary();
-      }
-    };
-    applianceForm.addEventListener('submit', e => {
-      e.preventDefault();
-      if (lightingAppliances.length === 0) {
-        alert('Please add lighting info first!');
-        return;
-      }
-      const name     = document.getElementById('applianceName').value.trim();
-      const wattage  = parseFloat(document.getElementById('applianceWattage').value);
-      const hours    = parseFloat(document.getElementById('applianceHours').value);
-      const quantity = parseInt(document.getElementById('applianceQuantity').value, 10);
-      const room     = document.getElementById('applianceRoom').value.trim();
-      const category = document.getElementById('applianceCategory').value.trim();
-      if (!name || wattage <= 0 || hours < 0 || hours > 24 || quantity < 1 || room === '') {
-        alert('Please enter valid appliance info, including Room.');
-        return;
-      }
-      const applianceItem = { name, wattage, hours, quantity, room, category };
-      if (applianceEditIndex !== null) {
-        otherAppliances[applianceEditIndex] = applianceItem;
-        applianceEditIndex = null;
-        applianceForm.querySelector('button').textContent = 'Add Appliance';
-      } else {
-        otherAppliances.push(applianceItem);
-      }
+    }
+  };
+  applianceForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (lightingAppliances.length === 0) {
+      alert('Please add lighting info first!');
+      return;
+    }
+    const name     = document.getElementById('applianceName').value.trim();
+    const wattage  = parseFloat(document.getElementById('applianceWattage').value);
+    const hours    = parseFloat(document.getElementById('applianceHours').value);
+    const quantity = parseInt(document.getElementById('applianceQuantity').value, 10);
+    const room     = document.getElementById('applianceRoom').value.trim();
+    const category = document.getElementById('applianceCategory').value.trim();
+    if (!name || wattage <= 0 || hours < 0 || hours > 24 || quantity < 1 || room === '') {
+      alert('Please enter valid appliance info, including Room.');
+      return;
+    }
+    const applianceItem = { name, wattage, hours, quantity, room, category };
+    if (applianceEditIndex !== null) {
+      otherAppliances[applianceEditIndex] = applianceItem;
+      applianceEditIndex = null;
+      applianceForm.querySelector('button').textContent = 'Add Appliance';
+    } else {
+      otherAppliances.push(applianceItem);
+    }
+    saveAll();
+    renderApplianceTable();
+    updateSummary();
+    applianceForm.reset();
+  });
+  window.editAppliance = function(i) {
+    const item = otherAppliances[i];
+    document.getElementById('applianceName').value     = item.name;
+    document.getElementById('applianceWattage').value  = item.wattage;
+    document.getElementById('applianceHours').value    = item.hours;
+    document.getElementById('applianceQuantity').value = item.quantity;
+    document.getElementById('applianceRoom').value     = item.room;
+    document.getElementById('applianceCategory').value = item.category;
+    applianceEditIndex = i;
+    applianceForm.querySelector('button').textContent = 'Update Appliance';
+    window.scrollTo({ top: document.getElementById('applianceSection').offsetTop, behavior: 'smooth' });
+  };
+  window.deleteAppliance = function(i) {
+    if (confirm(`Delete appliance "${otherAppliances[i].name}"?`)) {
+      otherAppliances.splice(i, 1);
       saveAll();
       renderApplianceTable();
       updateSummary();
-      applianceForm.reset();
+    }
+  };
+  electricityRateInput.addEventListener('change', () => {
+    const val = parseFloat(electricityRateInput.value);
+    if (val > 0) {
+      electricityRate = val;
+      saveAll();
+      updateSummary();
+    } else {
+      alert('Please enter a valid electricity rate greater than 0.');
+      electricityRateInput.value = electricityRate.toFixed(3);
+    }
+  });
+  function generateColors(count) {
+    const baseColors = [
+      '#c47f49', '#a97134', '#d6a35d', '#b27e3b', '#ffbf80',
+      '#c2b280', '#8c6239', '#a87c5a', '#d9a664', '#ad7f52'
+    ];
+    if (count <= baseColors.length) return baseColors.slice(0, count);
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      colors.push(baseColors[i % baseColors.length]);
+    }
+    return colors;
+  }
+  function clearCharts() {
+    chartsContainer.innerHTML = `
+      <canvas id="chartCategory" aria-label="Energy use by category"></canvas>
+      <canvas id="chartRoom" aria-label="Energy use by room"></canvas>
+      <canvas id="chartEnergyCost" aria-label="Energy and cost by appliance"></canvas>
+      <canvas id="chartLightingRoom" aria-label="Lighting energy distribution by room"></canvas>
+    `;
+  }
+  function generateCharts() {
+    if (lightingAppliances.length === 0) {
+      alert('Please add lighting info first to generate charts!');
+      return;
+    }
+    chartsContainer.style.display = 'flex';
+    clearCharts();
+    const allAppliances = [
+      ...lightingAppliances.map(item => ({
+        ...item,
+        category: 'Lighting',
+        room: item.room,
+        name: item.name + ' (Light Bulbs)',
+        quantity: item.quantity || 1
+      })),
+      ...otherAppliances.map(item => ({
+        ...item,
+        quantity: item.quantity || 1,
+        room: item.room,
+        category: item.category || 'Other',
+        name: item.name
+      }))
+    ];
+    const multiplier = 30;
+    // Chart 1: Energy Use by Category (doughnut)
+    const sumsByCategory = {};
+    allAppliances.forEach(a => {
+      if (!a.category) return;
+      const energyMonthly = (a.wattage * a.hours * a.quantity / 1000) * multiplier;
+      sumsByCategory[a.category] = (sumsByCategory[a.category] || 0) + energyMonthly;
     });
-    window.editAppliance = function(i) {
-      const item = otherAppliances[i];
-      document.getElementById('applianceName').value     = item.name;
-      document.getElementById('applianceWattage').value  = item.wattage;
-      document.getElementById('applianceHours').value    = item.hours;
-      document.getElementById('applianceQuantity').value = item.quantity;
-      document.getElementById('applianceRoom').value     = item.room;
-      document.getElementById('applianceCategory').value = item.category;
-      applianceEditIndex = i;
-      applianceForm.querySelector('button').textContent = 'Update Appliance';
-      window.scrollTo({ top: document.getElementById('applianceSection').offsetTop, behavior: 'smooth' });
-    };
-    window.deleteAppliance = function(i) {
-      if (confirm(`Delete appliance "${otherAppliances[i].name}"?`)) {
-        otherAppliances.splice(i, 1);
-        saveAll();
-        renderApplianceTable();
-        updateSummary();
-      }
-    };
-    electricityRateInput.addEventListener('change', () => {
-      const val = parseFloat(electricityRateInput.value);
-      if (val > 0) {
-        electricityRate = val;
-        saveAll();
-        updateSummary();
-      } else {
-        alert('Please enter a valid electricity rate greater than 0.');
-        electricityRateInput.value = electricityRate.toFixed(3);
+    const catLabels = Object.keys(sumsByCategory);
+    const catValues = Object.values(sumsByCategory);
+    const ctxCat = document.getElementById('chartCategory').getContext('2d');
+    new Chart(ctxCat, {
+      type: 'doughnut',
+      data: {
+        labels: catLabels,
+        datasets: [{
+          data: catValues,
+          backgroundColor: generateColors(catLabels.length)
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 18 } }
+          },
+          title: {
+            display: true,
+            text: 'Energy Use by Category (Monthly)',
+            font: { size: 24 }
+          },
+          tooltip: { bodyFont: { size: 18 } }
+        }
       }
     });
-    summaryPeriodSelect.addEventListener('change', updateSummary);
-
-    // Chart.js
-    function generateColors(count) {
-      const baseColors = [
-        '#c47f49', '#a97134', '#d6a35d', '#b27e3b', '#ffbf80',
-        '#c2b280', '#8c6239', '#a87c5a', '#d9a664', '#ad7f52'
-      ];
-      if (count <= baseColors.length) return baseColors.slice(0, count);
-      const colors = [];
-      for (let i = 0; i < count; i++) {
-        colors.push(baseColors[i % baseColors.length]);
-      }
-      return colors;
-    }
-    function clearCharts() {
-      chartsContainer.innerHTML = `
-        <canvas id="chartCategory" aria-label="Energy use by category"></canvas>
-        <canvas id="chartRoom" aria-label="Energy use by room"></canvas>
-        <canvas id="chartEnergyCost" aria-label="Energy and cost by appliance"></canvas>
-        <canvas id="chartLightingRoom" aria-label="Lighting energy distribution by room"></canvas>
-      `;
-    }
-    function generateCharts() {
-      if (lightingAppliances.length === 0) {
-        alert('Please add lighting info first to generate charts!');
-        return;
-      }
-      chartsContainer.style.display = 'grid';
-      clearCharts();
-      const allAppliances = [
-        ...lightingAppliances.map(item => ({
-          ...item,
-          category: 'Lighting',
-          room: item.room,
-          name: item.name + ' (Light Bulbs)',
-          quantity: item.quantity || 1
-        })),
-        ...otherAppliances.map(item => ({
-          ...item,
-          quantity: item.quantity || 1,
-          room: item.room,
-          category: item.category || 'Other',
-          name: item.name
-        }))
-      ];
-      const multiplier = 30;
-      // Chart 1: Energy Use by Category (doughnut)
-      const sumsByCategory = {};
-      allAppliances.forEach(a => {
-        if (!a.category) return;
-        const energyMonthly = (a.wattage * a.hours * a.quantity / 1000) * multiplier;
-        sumsByCategory[a.category] = (sumsByCategory[a.category] || 0) + energyMonthly;
-      });
-      const catLabels = Object.keys(sumsByCategory);
-      const catValues = Object.values(sumsByCategory);
-      const ctxCat = document.getElementById('chartCategory').getContext('2d');
-      new Chart(ctxCat, {
-        type: 'doughnut',
-        data: {
-          labels: catLabels,
-          datasets: [{
-            data: catValues,
-            backgroundColor: generateColors(catLabels.length)
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'bottom', labels: { font: { size: 18 } } },
-            title: { display: true, text: 'Energy Use by Category (Monthly)', font: { size: 24 } },
-            tooltip: { bodyFont: { size: 18 } }
-          }
-        }
-      });
-      // Chart 2: Energy Use by Room (bar)
-      const sumsByRoom = {};
-      allAppliances.forEach(a => {
-        if (!a.room) return;
-        const energyMonthly = (a.wattage * a.hours * a.quantity / 1000) * multiplier;
-        sumsByRoom[a.room] = (sumsByRoom[a.room] || 0) + energyMonthly;
-      });
-      const roomLabels = Object.keys(sumsByRoom);
-      const roomValues = Object.values(sumsByRoom);
-      const ctxRoom = document.getElementById('chartRoom').getContext('2d');
-      new Chart(ctxRoom, {
-        type: 'bar',
-        data: {
-          labels: roomLabels,
-          datasets: [{
-            label: 'Energy Use by Room (kWh/month)',
-            data: roomValues,
-            backgroundColor: generateColors(roomLabels.length)
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'Energy Use by Room (Monthly)', font: { size: 24 } },
-            tooltip: { bodyFont: { size: 18 } }
+    // Chart 2: Energy Use by Room (bar)
+    const sumsByRoom = {};
+    allAppliances.forEach(a => {
+      if (!a.room) return;
+      const energyMonthly = (a.wattage * a.hours * a.quantity / 1000) * multiplier;
+      sumsByRoom[a.room] = (sumsByRoom[a.room] || 0) + energyMonthly;
+    });
+    const roomLabels = Object.keys(sumsByRoom);
+    const roomValues = Object.values(sumsByRoom);
+    const ctxRoom = document.getElementById('chartRoom').getContext('2d');
+    new Chart(ctxRoom, {
+      type: 'bar',
+      data: {
+        labels: roomLabels,
+        datasets: [{
+          label: 'Energy Use by Room (kWh/month)',
+          data: roomValues,
+          backgroundColor: generateColors(roomLabels.length)
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Energy Use by Room (Monthly)',
+            font: { size: 24 }
           },
-          scales: {
-            x: { ticks: { font: { size: 16 } } },
-            y: { beginAtZero: true, ticks: { font: { size: 16 } } }
-          }
-        }
-      });
-      // Chart 3: Energy and Cost by Appliance (bar)
-      const applianceLabels = allAppliances.map(a => a.name);
-      const energyValues   = allAppliances.map(a => (a.wattage * a.hours * a.quantity / 1000) * multiplier);
-      const costValues     = energyValues.map(ev => ev * electricityRate);
-      const ctxEnergyCost  = document.getElementById('chartEnergyCost').getContext('2d');
-      new Chart(ctxEnergyCost, {
-        type: 'bar',
-        data: {
-          labels: applianceLabels,
-          datasets: [
-            { label: 'Energy Use (kWh/month)', data: energyValues, backgroundColor: '#d99155' },
-            { label: 'Cost ($/month)', data: costValues, backgroundColor: '#a36633' }
-          ]
+          tooltip: { bodyFont: { size: 18 } }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'bottom', labels: { font: { size: 18 } } },
-            title: { display: true, text: 'Energy & Cost by Appliance (Monthly)', font: { size: 24 } },
-            tooltip: { bodyFont: { size: 18 } }
+        scales: {
+          x: { ticks: { font: { size: 16 } } },
+          y: { beginAtZero: true, ticks: { font: { size: 16 } } }
+        }
+      }
+    });
+    // Chart 3: Energy and Cost by Appliance (bar)
+    const applianceLabels = allAppliances.map(a => a.name);
+    const energyValues   = allAppliances.map(a => (a.wattage * a.hours * a.quantity / 1000) * multiplier);
+    const costValues     = energyValues.map(ev => ev * electricityRate);
+    const ctxEnergyCost  = document.getElementById('chartEnergyCost').getContext('2d');
+    new Chart(ctxEnergyCost, {
+      type: 'bar',
+      data: {
+        labels: applianceLabels,
+        datasets: [
+          { label: 'Energy Use (kWh/month)', data: energyValues, backgroundColor: '#d99155' },
+          { label: 'Cost ($/month)', data: costValues, backgroundColor: '#a36633' }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 18 } }
           },
-          scales: {
-            x: { ticks: { font: { size: 16 } } },
-            y: { beginAtZero: true, ticks: { font: { size: 16 } } }
-          }
-        }
-      });
-      // Chart 4: Lighting Energy Distribution by Room (pie)
-      const lightingRoomEnergy = {};
-      lightingAppliances.forEach(item => {
-        const roomName = item.room;
-        const energyDaily = (item.wattage * item.hours * (Number(item.quantity) || 1)) / 1000;
-        const energyMonthly = energyDaily * multiplier;
-        lightingRoomEnergy[roomName] = (lightingRoomEnergy[roomName] || 0) + energyMonthly;
-      });
-      const lightingRoomLabels = Object.keys(lightingRoomEnergy);
-      const lightingRoomValues = Object.values(lightingRoomEnergy);
-      const ctxLightingRoom = document.getElementById('chartLightingRoom').getContext('2d');
-      new Chart(ctxLightingRoom, {
-        type: 'pie',
-        data: {
-          labels: lightingRoomLabels,
-          datasets: [{
-            label: 'Lighting Energy Distribution (kWh/month)',
-            data: lightingRoomValues,
-            backgroundColor: generateColors(lightingRoomLabels.length)
-          }]
+          title: {
+            display: true,
+            text: 'Energy & Cost by Appliance (Monthly)',
+            font: { size: 24 }
+          },
+          tooltip: { bodyFont: { size: 18 } }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'bottom', labels: { font: { size: 18 } } },
-            title: { display: true, text: 'Lighting Energy Distribution Across Rooms', font: { size: 24 } },
-            tooltip: { bodyFont: { size: 18 } }
-          }
+        scales: {
+          x: { ticks: { font: { size: 16 } } },
+          y: { beginAtZero: true, ticks: { font: { size: 16 } } }
         }
-      });
-    }
-    renderLightingTable();
-    renderApplianceTable();
-    updateSummary();
-    generateChartsBtn.addEventListener('click', generateCharts);
-  </script>
+      }
+    });
+    // Chart 4: Lighting Energy Distribution by Room (pie)
+    const lightingRoomEnergy = {};
+    lightingAppliances.forEach(item => {
+      const roomName = item.room;
+      const energyDaily = (item.wattage * item.hours * (Number(item.quantity) || 1)) / 1000;
+      const energyMonthly = energyDaily * multiplier;
+      lightingRoomEnergy[roomName] = (lightingRoomEnergy[roomName] || 0) + energyMonthly;
+    });
+    const lightingRoomLabels = Object.keys(lightingRoomEnergy);
+    const lightingRoomValues = Object.values(lightingRoomEnergy);
+    const ctxLightingRoom = document.getElementById('chartLightingRoom').getContext('2d');
+    new Chart(ctxLightingRoom, {
+      type: 'pie',
+      data: {
+        labels: lightingRoomLabels,
+        datasets: [{
+          label: 'Lighting Energy Distribution (kWh/month)',
+          data: lightingRoomValues,
+          backgroundColor: generateColors(lightingRoomLabels.length)
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 18 } }
+          },
+          title: {
+            display: true,
+            text: 'Lighting Energy Distribution Across Rooms',
+            font: { size: 24 }
+          },
+          tooltip: { bodyFont: { size: 18 } }
+        }
+      }
+    });
+  }
+  renderLightingTable();
+  renderApplianceTable();
+  updateSummary();
+  generateChartsBtn.addEventListener('click', generateCharts);
+</script>
 </body>
 </html>
